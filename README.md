@@ -22,9 +22,10 @@ This repository contains scripts for processing POD5 files, generating ground tr
   - [Generate Concatenated Tensor from One-Hot-Encoding Layers](#generate-concatenated-tensor-from-one-hot-encoding-layers)
 - [Metagenomics Analysis](#metagenomics-analysis)
   - [Dorado Basecalling and Demultiplexing](#dorado-basecalling-and-demultiplexing-script)
+  - [Read Processing](#read-processing-script)
   - [Assembly and Polishing](#assembly-and-polishing-script)
   - [Kraken2 Contig Classification](#kraken2-contig-classification-script)
-  - [Read Processing](#read-processing-script)
+
 
 ## Installation
 
@@ -261,6 +262,13 @@ The script runs Dorado basecaller to convert raw nanopore signal data to nucleot
 bash metagenomics_analysis/dorado_basecalling.sh
 ```
 
+### Read Processing
+This script processes barcode files using Porechop to remove adapter sequences and NanoFilt to filter reads longer than 100 bp. The results are saved in the porechop and nanofilt directories.
+
+```
+bash metagenomics_analysis/readprocessing.sh
+```
+
 ### Assembly and Polishing
 This script processes filtered reads using Flye, Minimap2, Samtools, and Racon to assemble and polish sequences. The results are stored in respective directories.
 
@@ -273,11 +281,4 @@ The script uses Kraken2 to classify polished assemblies, generating taxonomic re
 
 ```
 bash metagenomics_analysis/kraken2_contig_classification.sh
-```
-
-### Read Processing
-This script processes barcode files using Porechop to remove adapter sequences and NanoFilt to filter reads longer than 100 bp. The results are saved in the porechop and nanofilt directories.
-
-```
-bash metagenomics_analysis/readprocessing.sh
 ```
