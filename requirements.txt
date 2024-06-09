@@ -1,0 +1,11 @@
+torch
+numpy
+matplotlib
+scipy
+tqdm
+click
+pandas
+pod5
+argparse
+opencv-python
+scikit-learn
