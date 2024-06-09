@@ -2,7 +2,7 @@
 
 <img align="right" width="220" height="180" src="images/viaSquiggle.png" alt="viaSquiggle"> 
 
-This repository contains scripts for processing POD5 files, generating ground truth labels, filtering POD5 files based on ground truth, preprocessing data, concatenating preprocessed files, training models, running inference, generating Class Activation Maps (CAMs), detecting sudden drops in signals, generating concatenated tensors from one-hot encoded layers and metagenomics analysis pipeline. The model trained in this repository is designed to detect nanopore signals originating from dead microorganisms.
+This repository contains scripts for processing POD5 files, generating ground truth labels, filtering POD5 files based on ground truth, preprocessing data, concatenating preprocessed files, training models, running inference, generating Class Activation Maps (CAMs), detecting sudden drops in signals, generating concatenated tensors from one-hot encoded layers and metagenomics analysis pipeline. The model trained in this repository (AI_scripts/ResNet_677ep.ckpt) is designed to detect nanopore signals originating from dead microorganisms.
 
 ## Table of Contents
 - [Installation](#installation)
