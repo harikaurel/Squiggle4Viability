@@ -1,6 +1,6 @@
-<img align="right" width="220" height="180" src="images/viaSquiggle.png" alt="viaSquiggle"> 
-
 # Squiggle4Viability
+
+<img align="right" width="220" height="180" src="images/viaSquiggle.png" alt="viaSquiggle"> 
 
 This repository contains scripts for processing POD5 files, generating ground truth labels, filtering POD5 files based on ground truth, preprocessing data, concatenating preprocessed files, training models, running inference, generating Class Activation Maps (CAMs), detecting sudden drops in signals, generating concatenated tensors from one-hot encoded layers and metagenomics analysis pipeline. The model trained in this repository is designed to detect nanopore signals originating from dead microorganisms.
 
@@ -216,10 +216,11 @@ The plot_masking_steps.py script is designed to visualize the effect of masking 
 python plot_masking_steps.py --files ["masked_2000_values", "masked_1000_values", "masked_400_values", "masked_200_values", "masked_100_values"] --values ['2000', '1000', '400', '200', "100"] --title 'distribution_plots_all_p50.png'
 ```
 
+```
 --files (list): A list of folder names where the probabilities for different masking values are stored. Default is ["masked_2000_values", "masked_1000_values", "masked_400_values", "masked_200_values", "masked_100_values"].
 --values (list): A list of masked values used as labels for the plot. Default is ['2000', '1000', '400', '200', "100"].
 --title (str): The title of the plot. Default is 'distribution_plots_all_p50.png'.
-
+```
 
 ### XAI Rule
 The script reads POD5 files from a specified directory, normalizes the signal, detects sudden drops or anomalies, and saves the results to a specified output TSV file. Additionally, it generates visualizations of the detected points and saves them as PDF files.
