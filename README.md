@@ -236,6 +236,8 @@ python AI_scripts/detect_drops.py --out_path /out/file.tsv --in_path pod5_folder
 --padding INTEGER: Padding around detected drops for visualization. The default value is 50. Optional.
 ```
 
+![alt text](images/example1.png)
+
 ### Generate Concatenated Tensor from One-Hot-Encoding Layers
 
 The script reads sequences from a TSV file, one-hot encodes the sequences, and saves the concatenated one-hot encoded tensors to a specified output file.
