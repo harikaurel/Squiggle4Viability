@@ -1,8 +1,13 @@
-# Squiggle4Viability
+# Nanopore- and AI-empowered metagenomic viability inference
+
+In this study, we developed a ResNet (AI_scripts/ResNet_677ep.ckpt) model to differentiate nanopore signals (squiggles) coming from living and dead microorganisms. 
+Preprint Link: 
 
 <img align="right" width="220" height="180" src="images/viaSquiggle.png" alt="viaSquiggle"> 
 
-This repository contains scripts for processing POD5 files, generating ground truth labels, filtering POD5 files based on ground truth, preprocessing data, concatenating preprocessed files, training models, running inference, generating Class Activation Maps (CAMs), detecting sudden drops in signals, generating concatenated tensors from one-hot encoded layers and metagenomics analysis pipeline. The ResNet model (AI_scripts/ResNet_677ep.ckpt) is developed to detect nanopore signals originating from dead microorganisms.
+## Squiggle4Viability
+
+This repository contains scripts used in the paper for processing POD5 files, generating ground truth labels, filtering POD5 files based on ground truth, preprocessing data, concatenating preprocessed files, training models (ResNet and Transformer), running inference, generating Class Activation Maps (CAMs), detecting sudden drops in signals, generating concatenated tensors from one-hot encoded layers, and conducting metagenomics analysis.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -132,7 +137,6 @@ The script reads preprocessed positive (target) and negative (non-target) tensor
 
 ```
 python AI_scripts/trainer.py -tt concat_tensor/train_pos.pt -nt concat_tensor/train_neg.pt -tv concat_tensor/val_pos.pt -nv concat_tensor/val_neg.pt -o trained_model/trainedmodel1.ckpt --batch 1000 -e 100 -m ResNet1 -sl 10000 -l 1e-4
-
 ```
 
 ```
@@ -224,7 +228,8 @@ python plot_masking_steps.py --files ["masked_2000_values", "masked_1000_values"
 ```
 
 ### XAI Rule
-The script reads POD5 files from a specified directory, normalizes the signal, detects sudden drops or anomalies, and saves the results to a specified output TSV file. Additionally, it generates visualizations of the detected points and saves them as PDF files.
+
+The script reads POD5 files from a specified directory, normalizes the signals, detects sudden drops (one of the features observed via XAI) or anomalies, and saves the results to a specified output TSV file. Additionally, it generates visualizations of the detected points and saves them as PDF files.
 
 ```
 python AI_scripts/detect_drops.py --out_path /out/file.tsv --in_path pod5_folder --figure_path figure/directory
