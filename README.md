@@ -34,7 +34,7 @@ To set up the project, follow these steps:
 1. **Clone the repository:**
 
    ```
-   git clone https://github.com/harikaurel/Squiggle4Viability.git
+   git clone https://github.com/Genomics4OneHealth/Squiggle4Viability.git
    cd Squiggle4Viability
    ```
 
