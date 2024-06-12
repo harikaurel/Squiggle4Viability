@@ -1,7 +1,7 @@
 # Nanopore- and AI-empowered metagenomic viability inference
 
 In this study, we developed a ResNet (AI_scripts/ResNet_677ep.ckpt) model to differentiate nanopore signals (squiggles) coming from living and dead microorganisms. 
-Preprint Link: 
+Link to preprint: https://www.biorxiv.org/content/10.1101/2024.06.10.598221v1
 
 <img align="right" width="220" height="180" src="images/viaSquiggle.png" alt="viaSquiggle"> 
 
