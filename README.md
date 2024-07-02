@@ -105,7 +105,7 @@ python AI_scripts/filter_pod5_by_ground_truth.py --directory_path /path/to/input
 The script reads POD5 files from a specified directory, normalizes the data, and saves the results as PyTorch tensors in a specified output directory. It supports processing both positive (target) and negative (non-target) data.
 
 ```
-python AI_scripts/preprocess_pod5.py -i /path/to/input_pod5_files -o /path/to/output_directory -dt pos -b 1000 -sl 10000
+python AI_scripts/preprocess.py -i /path/to/input_pod5_files -o /path/to/output_directory -dt pos -b 1000 -sl 10000
 ```
 
 ```
