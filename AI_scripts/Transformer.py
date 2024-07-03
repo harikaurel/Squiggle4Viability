@@ -51,7 +51,7 @@ class TransformerBlock(nn.Module):
 class Transformer(nn.Module):
     def __init__(self, input_shape, nb_classes, num_heads=1, ff_dim=256,
              num_transformer_blocks=1, mlp_units=None, dropout=0.1, mlp_dropout=0.25, in_channels=1, out_channels=1, kernel_size=30, d_model=1):
-        super(TransformerNet, self).__init__()
+        super(Transformer, self).__init__()
         self.d_model = d_model
         # self.conv_name = f"conv{out_channels}"
         self.conv = nn.Conv1d(in_channels, out_channels, kernel_size, stride=10, padding=0)
