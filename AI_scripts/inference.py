@@ -80,13 +80,12 @@ def get_raw_data(inpath, fileNM, data_test, data_name):
 @click.option('--model_type', '-mt', default="ResNet1", help='Model to use for training, options are "ResNet1", "ResNet2", "ResNet3", "Transformer" or "ResNet4Sequence"')
 @click.option('--sig_len', '-sl', default=10000, help='chunk size of the signal')
 
-def main(model, inpath, outpath, cutoff, model_type, sig_len):
+def main(model, inpath, outpath, model_type, sig_len):
 
 	click.echo(f"""
     model: {model}
     inpath: {inpath}
     outpath: {outpath}
-    cutoff: {cutoff}
     model_type: {model_type}
     sig_len: {sig_len}
     """)
