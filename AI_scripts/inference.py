@@ -143,15 +143,30 @@ def main(model, inpath, outpath, model_type, sig_len):
 
 	batchi = 0
 
+	# for fileNM in glob.glob(inpath + '/**/*.pod5', recursive=True):
+	# 	data_test = []
+	# 	data_name = []
+	# 	file_directory = os.path.dirname(fileNM)
+	# 	data_test, data_name = get_raw_data(file_directory, os.path.basename(fileNM), data_test, data_name)
+	# 	data_test = normalization(data_test, batchi, sig_len)
+	# 	process(data_test, data_name, batchi, bmodel, outpath, device)
+	# 	print(f"$$$$$$$$$$ Done with batch {batchi}\n")
+	# 	batchi += 1
+
 	for fileNM in glob.glob(inpath + '/**/*.pod5', recursive=True):
 		data_test = []
 		data_name = []
-		file_directory = os.path.dirname(fileNM)
-		data_test, data_name = get_raw_data(file_directory, os.path.basename(fileNM), data_test, data_name)
-		data_test = normalization(data_test, batchi, sig_len)
-		process(data_test, data_name, batchi, bmodel, outpath, device)
-		print(f"$$$$$$$$$$ Done with batch {batchi}\n")
-		batchi += 1
+		data_test, data_name = get_raw_data(os.path.dirname(fileNM), os.path.basename(fileNM), data_test, data_name)
+
+		# Process in chunks of 10,000
+		for start_idx in range(0, len(data_test), 10000):
+			end_idx = min(start_idx + 10000, len(data_test))
+			batch_data_test = data_test[start_idx:end_idx]
+			batch_data_name = data_name[start_idx:end_idx]
+			batchi += 1
+			batch_data_test = normalization(batch_data_test, batchi, sig_len)
+			process(batch_data_test, batch_data_name, batchi, bmodel, outpath, device)
+			print(f"$$$$$$$$$$ Done with batch {batchi}\n")
 
 	print("FINAL--- %s seconds ---" % (time.time() - start_time))
 
