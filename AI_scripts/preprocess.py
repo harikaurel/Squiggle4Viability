@@ -5,7 +5,6 @@ import torch
 import numpy as np
 from scipy import stats
 import pod5 as p5
-import torch
 
 def normalization(data_test, xi, outpath, sig_len, pos = True):
 	mad = stats.median_abs_deviation(data_test, axis=1, scale='normal')
