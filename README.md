@@ -144,7 +144,7 @@ python AI_scripts/trainer.py -tt concat_tensor/train_pos.pt -nt concat_tensor/tr
 -tv, --tVal PATH: The path to the target sequence validation set. This argument is required.
 -nt, --nTrain PATH: The path to the non-target sequence training set. This argument is required.
 -nv, --nVal PATH: The path to the non-target sequence validation set. This argument is required.
--o, --outpath TEXT: The output path for saving the trained model checkpoint. This argument is required.
+-o, --outpath PATH: The directory path for saving the trained model checkpoints. This argument is required.
 -b, --batch INTEGER: The batch size for training. The default value is 1000. Optional.
 -i, --interm PATH: The path and name for the model checkpoint to resume training (optional).
 -m, --model_type TEXT: The model type for training. Options are "ResNet1", "ResNet2", "ResNet3", "Transformer", or "ResNet4Sequence". The default value is "ResNet1".
