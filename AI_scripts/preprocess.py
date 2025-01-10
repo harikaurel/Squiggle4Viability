@@ -31,16 +31,14 @@ def normalization(data_test, xi, outpath, sig_len, pos = True):
 @click.option('--inpath', '-i', required=True, help='The input pod5 directory path')
 @click.option('--outpath', '-o', required=True, help='The output tensor directory path')
 @click.option('--datatype', '-dt', required=True, help='pos (target) or neg (non-target)')
-@click.option('--batch', '-b', default=1000, help='Batch size, default 1000')
 @click.option('--sig_len', '-sl', default=10000, help='signal length, default 1000')
 
-def main(inpath, outpath, datatype, batch, sig_len):
+def main(inpath, outpath, datatype, sig_len):
 
 	click.echo(f"""
     inpath: {inpath}
     outpath: {outpath}
     datatype: {datatype}
-    batch: {batch}
     sig_len: {sig_len}
     """)
 
@@ -51,21 +49,31 @@ def main(inpath, outpath, datatype, batch, sig_len):
 		
 	os.makedirs(outpath, exist_ok=True)
 
-	arr = []
 	bi = 0
-	
+
+	batch_size = 1000  # Define the batch size
+
 	for fileNM in glob.glob(inpath + '/*.pod5'):
-		print("##### file: " + fileNM)
+		print(f"##### Processing file: {fileNM}")
+		
+		arr = []  # Reset the signal array for each file
+
 		with p5.Reader(fileNM) as reader:
 			for read in reader.reads():
 				raw_data = read.signal
-				bi += 1
 				arr.append(raw_data)
-				if (bi%batch == 0) and (bi != 0):
+				bi += 1
+				
+				# Process the batch when the batch size is reached
+				if len(arr) == batch_size:
+					print(f"Processing batch of size {len(arr)} for file {fileNM} (signals processed until now: {bi})")
 					normalization(arr, bi, outpath, sig_len, pos)
-					del arr
-					arr = []
+					arr = []  # Reset the array for the next batch
 
+		# Process the remaining signals (if any) after finishing the current file
+		if arr:
+			print(f"Processing final batch of size {len(arr)} for file {fileNM} (signals processed until now: {bi})")
+			normalization(arr, bi, outpath, sig_len, pos)
 
 if __name__ == '__main__':
 	main()
