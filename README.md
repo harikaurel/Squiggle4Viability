@@ -303,7 +303,7 @@ The script uses Kraken2 to classify polished assemblies, generating taxonomic re
 bash metagenomics_analysis/kraken2_contig_classification.sh
 ```
 
-### Kraken2 Contig Classification
+### Kraken2 Read Classification
 The script uses Kraken2 to classify reads from Porechop outputs. The results are saved in the kraken2_reads directory.
 
 ```
