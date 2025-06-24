@@ -27,9 +27,12 @@ This repository contains scripts used in the paper for processing POD5 files, ge
   - [Generate Concatenated Tensor from One-Hot-Encoding Layers](#generate-concatenated-tensor-from-one-hot-encoding-layers)
 - [Metagenomics Analysis](#metagenomics-analysis)
   - [Dorado Basecalling and Demultiplexing](#dorado-basecalling-and-demultiplexing-script)
+  - [Extract Read IDs Without 'pi' Tag from BAM](#extract-read-ids-without-pi-tag-from-bam)
   - [Read Processing](#read-processing-script)
   - [Assembly and Polishing](#assembly-and-polishing-script)
   - [Kraken2 Contig Classification](#kraken2-contig-classification-script)
+  - [Extract Read IDs by Genus from Kraken2 Output](#extract-read-ids-by-genus-from-kraken2-output)
+
 
 
 ## Installation
@@ -180,7 +183,7 @@ The `AI_scripts/evaluation.ipynb` notebook and `AI_scripts/evaluation_functions.
 
 The script reads segmented POD5 files from a specified directory, processes the data, and generates CAMs using a pretrained model. The results are saved as PDF files in a specified output directory.
 ```
-python AI_scripts/generate_cams.py --ground_truth_file path_to_ground_truth_file --model_weights path_to_model_weights --cam_folder path_to_output_folder --pod5_path path_to_pod5_file
+
 ```
 
 ```
@@ -266,6 +269,18 @@ The script runs Dorado basecaller to convert raw nanopore signal data to nucleot
 ```
 bash metagenomics_analysis/dorado_basecalling.sh
 ```
+### Extract Read IDs without 'pi' Tag from BAM (non-chimera detection)
+
+This script extracts read IDs from a BAM file that **do not** contain the `pi` tag — potentially indicating **non-chimeric reads**. It requires a BAM file aligned with tag annotations.
+
+```
+python metagenomics_analysis/extract_non_chimeras.py -b path/to/input.bam -o path/to/output.txt
+```
+
+```
+-b, --bam PATH Path to the input BAM file.
+-o, --output PATH Path to save the list of read IDs without 'pi' tags.
+```
 
 ### Read Processing
 This script processes barcode files using Porechop to remove adapter sequences and NanoFilt to filter reads longer than 100 bp. The results are saved in the porechop and nanofilt directories.
@@ -286,4 +301,25 @@ The script uses Kraken2 to classify polished assemblies, generating taxonomic re
 
 ```
 bash metagenomics_analysis/kraken2_contig_classification.sh
+```
+
+### Kraken2 Contig Classification
+The script uses Kraken2 to classify reads from Porechop outputs. The results are saved in the kraken2_reads directory.
+
+```
+bash metagenomics_analysis/kraken2_read_classification.sh
+```
+
+### Extract Read IDs by Genus from Kraken2 Output
+
+This script processes Kraken2 read-level output files (`*.txt`) to extract read IDs (UUIDs) that match a desired genus.
+
+```
+python metagenomics_analysis/extract_genus_read_ids.py -i /path/to/kraken2_outputs -g Chlamydia -o chlamydia_read_ids.txt
+```
+
+```
+-i, --input_dir PATH: Directory containing Kraken2 output files.
+-g, --genus TEXT: Genus name to search for (e.g., "Chlamydia").
+-o, --output PATH: (Optional) Output text file to save matching read IDs.
 ```
