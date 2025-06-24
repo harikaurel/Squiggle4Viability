@@ -9,7 +9,8 @@ Link to preprint: https://www.biorxiv.org/content/10.1101/2024.06.10.598221v1
 
 This repository contains scripts used in the paper for processing POD5 files, generating ground truth labels, filtering POD5 files based on ground truth, preprocessing data, concatenating preprocessed files, training models (ResNet and Transformer), running inference, generating Class Activation Maps (CAMs), detecting sudden drops in signals, generating concatenated tensors from one-hot encoded layers, and conducting metagenomics analysis.
 
-## Table of Contents
+## 📑 Table of Contents
+
 - [Installation](#installation)
 - [Neural Networks Trainings, Predictions, Explainability and Algorithm for Anomaly Detection](#neural-networks-trainings-predictions-and-algorithm-for-anomaly-detection)
   - [Segment Signals](#segment-signals)
@@ -18,7 +19,8 @@ This repository contains scripts used in the paper for processing POD5 files, ge
   - [Pre-processing for POD5](#pre-processing-for-pod5)
   - [Concatenate Preprocessed Files](#concatenate-preprocessed-files)
   - [Training](#training)
-  - [Inference](#inference)
+  - [Inference on Fixed Length of Chunks](#inference-on-fixed-length-of-chunks)
+  - [Inference on Full-Length Variable Signals (No Chunking Required)](#inference-on-full-length-variable-signals-no-chunking-required)
   - [Model Performance Analysis](#model-performance-analysis)
   - [Generate Class Activation Maps (CAMs)](#generate-class-activation-maps-cams)
   - [Analyze Impact of Dark CAM Regions by Masking Consecutively](#analyze-impact-of-dark-cam-regions-by-masking-consecutively)
@@ -26,13 +28,13 @@ This repository contains scripts used in the paper for processing POD5 files, ge
   - [XAI Rule](#xai-rule)
   - [Generate Concatenated Tensor from One-Hot-Encoding Layers](#generate-concatenated-tensor-from-one-hot-encoding-layers)
 - [Metagenomics Analysis](#metagenomics-analysis)
-  - [Dorado Basecalling and Demultiplexing](#dorado-basecalling-and-demultiplexing-script)
-  - [Extract Read IDs Without 'pi' Tag from BAM](#extract-read-ids-without-pi-tag-from-bam)
-  - [Read Processing](#read-processing-script)
-  - [Assembly and Polishing](#assembly-and-polishing-script)
-  - [Kraken2 Contig Classification](#kraken2-contig-classification-script)
+  - [Dorado Basecalling and Demultiplexing](#dorado-basecalling-and-demultiplexing)
+  - [Extract Read IDs without 'pi' Tag from BAM (non-chimera detection)](#extract-read-ids-without-pi-tag-from-bam-non-chimera-detection)
+  - [Read Processing](#read-processing)
+  - [Assembly and Polishing](#assembly-and-polishing)
+  - [Kraken2 Contig Classification](#kraken2-contig-classification)
+  - [Kraken2 Read Classification](#kraken2-read-classification)
   - [Extract Read IDs by Genus from Kraken2 Output](#extract-read-ids-by-genus-from-kraken2-output)
-
 
 
 ## Installation
@@ -158,9 +160,9 @@ python AI_scripts/trainer.py -tt concat_tensor/train_pos.pt -nt concat_tensor/tr
 ```
 
 
-### Inference
+### Inference on Fixed Length of Chunks
 
-The script reads segmented POD5 files from a specified directory, processes the data, and makes predictions using a pretrained model. The results are saved as text files in a specified output directory.
+The script reads segmented signals in POD5 files from a specified directory, processes the data, and makes predictions using a pretrained model. The results are saved as text files in a specified output directory. This script is not applicable for variable signal length.
 
 
 ```
@@ -175,6 +177,24 @@ python AI_scripts/inference.py -m path_to_model_weights -i path_to_pod5_folder -
 -sl, --sig_len INTEGER: The chunk size of the signal. The default value is 10000. Optional.
 ```
 
+### Inference on Full-Length Variable Signals (No Chunking Required)
+The AI_scripts/inference_variable_length.py script enables prediction directly on full-length signals from .pod5 files without requiring chunking. It handles variable signal lengths by grouping reads by length and batching them efficiently.
+```
+python AI_scripts/inference_variable_length.py \
+    --model path_to_model_weights \
+    --inpath path_to_pod5_folder \
+    --outpath path_to_output_folder \
+    --model_type ResNet1
+```
+
+```
+--model, -m PATH         Path to the pretrained model weights.
+--inpath, -i PATH        Input directory containing .pod5 files.
+--outpath, -o PATH       Output directory for saving predictions.
+--model_type, -mt TEXT   Model architecture to use. Options: "ResNet1", "ResNet2", "ResNet3", "Transformer", or "ResNet4Sequence".
+```
+
+
 ### Model Performance Analysis
 
 The `AI_scripts/evaluation.ipynb` notebook and `AI_scripts/evaluation_functions.py` script assess the model's performance by calculating metrics (accuracy, F1, specificity, recall, precision, AUPR, AUROC) and plotting performance curves (precision-recall and receiver operating characteristic curves).
@@ -183,7 +203,11 @@ The `AI_scripts/evaluation.ipynb` notebook and `AI_scripts/evaluation_functions.
 
 The script reads segmented POD5 files from a specified directory, processes the data, and generates CAMs using a pretrained model. The results are saved as PDF files in a specified output directory.
 ```
-
+python AI_scripts/generate_cam.py \
+    --ground_truth_file path/to/groundtruth.txt \
+    --model_weights path/to/ResNet_677ep.ckpt \
+    --cam_folder path/to/save/cams \
+    --pod5_path path/to/pod5_file.pod5
 ```
 
 ```
