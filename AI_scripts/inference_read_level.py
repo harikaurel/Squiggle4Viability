@@ -55,15 +55,14 @@ def process(data_test, data_name, batchi, bmodel, outpath, device):
         testx = data_test.to(device)
         outputs_test = bmodel(testx)
 
-        # Determine the output file
         file_index = 0
         current_file = os.path.join(outpath, f'batch_{file_index}.txt')
 
-        while count_lines(current_file) >= 4000:  # Check if current file exceeds the limit
+        while count_lines(current_file) >= 4000:
             file_index += 1
             current_file = os.path.join(outpath, f'batch_{file_index}.txt')
 
-        with open(current_file, 'a') as f:  # Append to the current file
+        with open(current_file, 'a') as f:
             for nm, val, logits in zip(data_name, outputs_test.max(dim=1).indices.int().data.cpu().numpy(), outputs_test.data.cpu().numpy()):
                 arr = [logits[0], logits[1]]
                 tensor = torch.tensor(arr)
@@ -87,16 +86,6 @@ def get_raw_data(inpath, fileNM, data_test, data_name):
 				data_name.append(read.read_id)
 	return data_test, data_name
 
-# def get_raw_data(inpath, fileNM, data_test, data_name, read_ids_to_process):
-# 	pod5_filepath = os.path.join(inpath, fileNM)
-# 	with p5.Reader(pod5_filepath) as reader:
-# 		for read in reader.reads():
-# 			if read.read_id in read_ids_to_process:
-# 				raw_data = read.signal
-# 				data_test.append(raw_data)
-# 				data_name.append(read.read_id)
-# 	return data_test, data_name
-
 
 def count_lines(filepath):
     """Count the number of lines in a file."""
@@ -105,10 +94,7 @@ def count_lines(filepath):
             return sum(1 for _ in f)
     return 0
 
-# def load_read_ids(filepath):
-#     """Load read IDs from a text file into a set."""
-#     with open(filepath, 'r') as f:
-#         return list(set(line.strip() for line in f))
+
 
 
 @click.command()
@@ -116,7 +102,6 @@ def count_lines(filepath):
 @click.option('--inpath', '-i', help='The input fast5 folder path', type=click.Path(exists=True))
 @click.option('--outpath', '-o', help='The output result folder path', type=click.Path())
 @click.option('--model_type', '-mt', default="ResNet1", help='Model to use for training, options are "ResNet1", "ResNet2", "ResNet3", "Transformer" or "ResNet4Sequence"')
-# @click.option('--sig_len', '-sl', default=10000, help='chunk size of the signal')
 
 def main(model, inpath, outpath, model_type):
 
@@ -182,17 +167,10 @@ def main(model, inpath, outpath, model_type):
 
 	signal_groups = defaultdict(list)
 
-	# Uncomment the next line to enable filtering by read_ids.txt
-	# read_ids_to_process = load_read_ids("/home/haicu/harika.uerel/inference_on_all/read_ids_ctrld0.txt")  # Provide the path to read_ids.txt
-	# print(read_ids_to_process)
-	
-
 	for fileNM in glob.glob(inpath + '/**/*.pod5', recursive=True):
 		data_test = []
 		data_name = []
 		data_test, data_name = get_raw_data(os.path.dirname(fileNM), os.path.basename(fileNM), data_test, data_name)
-
-		# data_test, data_name = get_raw_data(os.path.dirname(fileNM), os.path.basename(fileNM), data_test, data_name, read_ids_to_process)
 
 		for raw_data, name in zip(data_test, data_name):
 			signal_groups[len(raw_data)].append((raw_data, name))
