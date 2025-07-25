@@ -105,11 +105,6 @@ def count_lines(filepath):
             return sum(1 for _ in f)
     return 0
 
-# def load_read_ids(filepath):
-#     """Load read IDs from a text file into a set."""
-#     with open(filepath, 'r') as f:
-#         return list(set(line.strip() for line in f))
-
 
 @click.command()
 @click.option('--model', '-m', help='The pretrained model path and name', type=click.Path(exists=True))
@@ -181,18 +176,12 @@ def main(model, inpath, outpath, model_type):
 	batchi = 0
 
 	signal_groups = defaultdict(list)
-
-	# Uncomment the next line to enable filtering by read_ids.txt
-	# read_ids_to_process = load_read_ids("/home/haicu/harika.uerel/inference_on_all/read_ids_ctrld0.txt")  # Provide the path to read_ids.txt
-	# print(read_ids_to_process)
 	
-
-	for fileNM in glob.glob(inpath + '/**/*.pod5', recursive=True):
+	for fileNM in glob.glob(inpath + '/*.pod5', recursive=True):
 		data_test = []
 		data_name = []
 		data_test, data_name = get_raw_data(os.path.dirname(fileNM), os.path.basename(fileNM), data_test, data_name)
-
-		# data_test, data_name = get_raw_data(os.path.dirname(fileNM), os.path.basename(fileNM), data_test, data_name, read_ids_to_process)
+		print(f"Processing file {fileNM} with {len(data_test)} reads")
 
 		for raw_data, name in zip(data_test, data_name):
 			signal_groups[len(raw_data)].append((raw_data, name))
@@ -202,6 +191,7 @@ def main(model, inpath, outpath, model_type):
 	MAX_BATCH_SIZE = 1000
 
 	for length, signals in signal_groups.items():
+		print(f"Processing signals of length {length} with {len(signals)} entries")
 		batch_data_test = [signal[0] for signal in signals]
 		batch_data_name = [signal[1] for signal in signals]
 
