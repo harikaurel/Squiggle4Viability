@@ -9,7 +9,7 @@ Link to preprint: https://www.biorxiv.org/content/10.1101/2024.06.10.598221v2
 
 This repository contains scripts used in the paper for processing POD5 files, generating ground truth labels, filtering POD5 files based on ground truth, preprocessing data, concatenating preprocessed files, training models (ResNet and Transformer), running inference, generating Class Activation Maps (CAMs), detecting sudden drops in signals, generating concatenated tensors from one-hot encoded layers, and conducting metagenomics analysis.
 
-## 📑 Table of Contents
+## Table of Contents
 
 - [Installation](#installation)
 - [Neural Networks Trainings, Predictions, Explainability and Algorithm for Anomaly Detection](#neural-networks-trainings-predictions-and-algorithm-for-anomaly-detection)
