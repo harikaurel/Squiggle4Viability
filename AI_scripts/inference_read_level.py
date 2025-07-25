@@ -55,15 +55,14 @@ def process(data_test, data_name, batchi, bmodel, outpath, device):
         testx = data_test.to(device)
         outputs_test = bmodel(testx)
 
-        # Determine the output file
         file_index = 0
         current_file = os.path.join(outpath, f'batch_{file_index}.txt')
 
-        while count_lines(current_file) >= 4000:  # Check if current file exceeds the limit
+        while count_lines(current_file) >= 4000:
             file_index += 1
             current_file = os.path.join(outpath, f'batch_{file_index}.txt')
 
-        with open(current_file, 'a') as f:  # Append to the current file
+        with open(current_file, 'a') as f:
             for nm, val, logits in zip(data_name, outputs_test.max(dim=1).indices.int().data.cpu().numpy(), outputs_test.data.cpu().numpy()):
                 arr = [logits[0], logits[1]]
                 tensor = torch.tensor(arr)
@@ -87,16 +86,6 @@ def get_raw_data(inpath, fileNM, data_test, data_name):
 				data_name.append(read.read_id)
 	return data_test, data_name
 
-# def get_raw_data(inpath, fileNM, data_test, data_name, read_ids_to_process):
-# 	pod5_filepath = os.path.join(inpath, fileNM)
-# 	with p5.Reader(pod5_filepath) as reader:
-# 		for read in reader.reads():
-# 			if read.read_id in read_ids_to_process:
-# 				raw_data = read.signal
-# 				data_test.append(raw_data)
-# 				data_name.append(read.read_id)
-# 	return data_test, data_name
-
 
 def count_lines(filepath):
     """Count the number of lines in a file."""
@@ -105,13 +94,11 @@ def count_lines(filepath):
             return sum(1 for _ in f)
     return 0
 
-
 @click.command()
 @click.option('--model', '-m', help='The pretrained model path and name', type=click.Path(exists=True))
 @click.option('--inpath', '-i', help='The input fast5 folder path', type=click.Path(exists=True))
 @click.option('--outpath', '-o', help='The output result folder path', type=click.Path())
 @click.option('--model_type', '-mt', default="ResNet1", help='Model to use for training, options are "ResNet1", "ResNet2", "ResNet3", "Transformer" or "ResNet4Sequence"')
-# @click.option('--sig_len', '-sl', default=10000, help='chunk size of the signal')
 
 def main(model, inpath, outpath, model_type):
 
