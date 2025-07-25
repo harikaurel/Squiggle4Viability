@@ -1,6 +1,6 @@
 # Nanopore- and AI-empowered metagenomic viability inference
 
-In this study, we developed a ResNet (AI_scripts/ResNet_677ep.ckpt) model to differentiate nanopore signals (squiggles) coming from living and dead microorganisms. 
+In this study, we developed ResNet models (models/antibiotic_ecoli_ResNet_550ep.ckpt and models/UV_ecoli_ResNet_677ep.ckpt) model to differentiate nanopore signals (squiggles) coming from living and dead microorganisms. 
 Link to preprint: https://www.biorxiv.org/content/10.1101/2024.06.10.598221v1
 
 <img align="right" width="220" height="180" src="images/viaSquiggle.png" alt="viaSquiggle"> 
@@ -205,7 +205,7 @@ The script reads segmented POD5 files from a specified directory, processes the 
 ```
 python AI_scripts/generate_cam.py \
     --ground_truth_file path/to/groundtruth.txt \
-    --model_weights path/to/ResNet_677ep.ckpt \
+    --model_weights models/UV_ecoli_ResNet_677ep.ckpt \
     --cam_folder path/to/save/cams \
     --pod5_path path/to/pod5_file.pod5
 ```
@@ -222,7 +222,7 @@ python AI_scripts/generate_cam.py \
 The mask_dark_regions_cam.py script is designed to generate and plot Class Activation Maps (CAMs) for given POD5 files. It processes the raw data, computes the CAMs using a pretrained model, and generates visualizations of the CAMs along with the corresponding signal. Additionally, it consecutively masks dark regions in the CAMs to evaluate the impact of these regions on the model's predictions by calculating probabilities in each masking iteration and saving these values.
 
 ```
-python mask_dark_regions_cam.py --ground_truth_file /path/to/ground_truth_file --data_folder /path/to/pod5_folder --model_weights ResNet_677ep.ckpt --cams_folder_name CAMs --mask 200 --thr 0.8 --prob_thr 0.99 --batch_size 512 --nbr_dark_region 1 --regions True
+python mask_dark_regions_cam.py --ground_truth_file /path/to/ground_truth_file --data_folder /path/to/pod5_folder --model_weights /models/UV_ecoli_ResNet_677ep.ckpt --cams_folder_name CAMs --mask 200 --thr 0.8 --prob_thr 0.99 --batch_size 512 --nbr_dark_region 1 --regions True
 ```
 
 ```
